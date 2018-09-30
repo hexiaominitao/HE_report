@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}用户{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index-login-regist.css') }}">
+{% endblock %}
+{% block content %}
+<form method="POST">
+    <div class="form-container">
+        {{ form.csrf_token }}
+        <div class="form-group">
+            {{ form.username(class="form-control") }}<br/>
+            {% for message in form.username.errors %}}
+                <small>{{ message }}</small>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.password(class="form-control") }}<br/>
+            {% for message in form.username.errors %}}
+                <small>{{ message }}</small>
+            {% endfor %}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary btn-block") }}
+        </div>
+    </div>
+</form>
+{% endblock %}

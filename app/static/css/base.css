@@ -1,0 +1,13 @@
+.logo{
+    color: white;
+    font-size: 20px;
+    font-family: Fira Code;
+    background: red;
+}
+
+.content{
+    background: #ffffff;
+    width: 730px;
+    margin: 0 auto;
+    overflow: hidden;
+}

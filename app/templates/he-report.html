@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}病理报告{% endblock %}
+{% block content %}
+<body>
+<style>
+.report-title{
+    text-align: center;
+    font-family: 微软雅黑;
+    font-size: 20px;
+}
+.sample-info{
+    font-family: 微软雅黑;
+    font-size: 15px;
+}
+.sample-info table{
+    border-collapse: collapse;
+    width: 96%;
+    margin: 0 auto;
+    border-top: 2px solid black;
+    border-bottom: 2px dashed black;
+}
+.foot-table1{
+    border-collapse: collapse;
+    width: 96%;
+    margin: 0 auto;
+    border-bottom: 1.5px dashed black;
+}
+.foot-table2{
+    border-collapse: collapse;
+    width: 96%;
+    margin: 0 auto;
+    border-bottom: 1.5px solid black;
+}
+.foot-table3{
+    border-collapse: collapse;
+    width: 96%;
+    margin: 0 auto;
+    border-bottom: 2px solid black;
+    font-size: 12px;
+}
+.foot-info tr{
+    height: 40px;
+}
+.sample-info tr{
+    height: 30px;
+}
+.report-header table{
+    border-collapse: collapse;
+    width: 96%;
+    margin: 0 auto;
+    border-bottom: 1px solid black;
+}
+.item-1{
+    float: left;
+    margin-left: 2%; 
+    margin-right: 1%;
+    vertical-align: top;
+    margin-top: auto;
+}
+.content-1{
+    margin-right: 2%;
+    overflow: hidden;
+    margin-top: auto;
+
+}
+.con{
+    display: inline;
+}
+.img1{
+    width: 200px;
+}
+</style>
+<header class="report-header">
+    <table>
+        <tr>
+            <td><img src="../static/images/mg.png" style="width: 80px; height: 50px;"></td>
+        </tr>
+        <tr>
+            <td>广州迈景基因医学检验所</td>
+        </tr>
+        <tr>
+            <td style="text-align: left">报告编号：</td>
+            <td style="text-align: right;">报告日期：</td>
+        </tr>
+    </table>
+</header>
+<div class="report-title">
+    <h1>病理评估报告</h1>
+</div>
+<div class="sample-info">
+        <table>
+            <caption style="text-align:right">报告编号：</caption>
+            <tr>
+                <td colspan="3">姓名：</td>
+                <td colspan="3">性别：</td>
+                <td colspan="3">年龄：</td>
+                <td colspan="3">民族：</td>
+            </tr>
+            <tr>
+                <td colspan="4">病理诊断：</td>
+                <td colspan="4">家族史：</td>
+                <td colspan="4">用药史：</td>
+            </tr>
+            <tr>
+                <td colspan="4">送检医院：</td>
+                <td colspan="4">送检科室：</td>
+                <td colspan="4">送检医生：</td>
+            </tr>
+            <tr>
+                <td colspan="4">样本编码：</td>
+                <td colspan="4">采样时间：</td>
+                <td colspan="4">收样时间：</td>
+            </tr>
+            <tr>
+                <td colspan="4">样本来源：</td>
+                <td colspan="4">采样方式：</td>
+                <td colspan="4">样本类型：</td>
+            </tr>
+        </table>
+</div>
+<br/>
+<br/>
+<div class="con">
+<p class="item-1"><b style="font-size: 15px">镜下所见：</b></p>
+<p class="content-1" contenteditable="true"></p>
+</div>
+<br/>
+<div class="con">
+    <p class="item-1"><b style="font-size: 15px">检测图片：</b></p>
+    <p class="content-1" style="text-align: center;"><img class="img1" src="../static/1.jpg" style="margin-right: 2%">
+        <img class="img1" src="../static/2.jpg">
+    </p>
+</div>
+<br/>
+<div class="con">
+    <p class="item-1"><b style="font-size: 15px">病理诊断：</b></p>
+    <p class="content-1">(右下)肺之低分化腺癌。
+    </p>
+</div>
+<br/>
+<div class="con">
+    <p class="item-1"><b style="font-size: 15px">病理评估：</b></p>
+    <p class="content-1">标本内细胞总量<a contenteditable="true"></a>个;肿瘤细胞含量为 <a contenteditable="true"></a>。
+        <br>
+        特殊说明:
+    </p>
+</div>
+<br/>
+<br/>
+<br/>
+<div class="foot-info">
+    <table class="foot-table1">
+        <tr>
+        <td colspan="1">收样时间：</td>
+        <td colspan="1">检测日期：</td>
+        <td colspan="1">报告日期：</td>
+    </tr>
+</table>
+<table class="foot-table2">
+    <tr>
+        <td>报告人：</td>
+        <td>审核人：</td>
+    </tr>
+</table>
+<table class="foot-table3">
+        <tr>
+            <td>实验室地址:广州国际生物岛螺旋四路9号4栋五层A501单元&nbsp;&nbsp;
+                    邮编:510300&nbsp;&nbsp;
+                    联系电话:020-89637656</td>
+        </tr>
+    </table>
+</div>
+</body>
+{% endblock %}
