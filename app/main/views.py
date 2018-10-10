@@ -3,18 +3,22 @@ import pandas as pd
 from pandas import DataFrame
 from flask import render_template, redirect, session, url_for, request, current_app
 from werkzeug import security
+from sqlalchemy import create_engine
 
 from . import main
 from .. import db, filezips
 from app.models import User
-from .forms import LoginForm, SeqGroupForm, RegistFrom, PhotoForm
+from .forms import LoginForm, SeqGroupForm, RegistFrom, PhotoForm, ReportInfoForm
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-    path_wk = os.getcwd()
-    path_zip = current_app.config['UPLOADED_ZIPFILE_DEST']
-    return render_template('index.html', path_wk=path_wk, path_zip=path_zip)
+    sql1 = 'SELECT * FROM sampleInfo'
+    sql2 = 'SELECT * FROM seqInfo'
+    ex_connect = create_engine(current_app.config['SQLALCHEMY_DATABASE_URI'])
+    df1 = pd.read_sql(sql1, ex_connect)
+    df2 = pd.read_sql(sql2, ex_connect)
+    return render_template('index.html')
 
 
 @main.route('/seqinfo/')
@@ -97,10 +101,22 @@ def excel_rd(path_xl):
 def heinfo():
     filename = None
     up_form = SeqGroupForm()
+    # Report_form = ReportInfoForm()
+    # 上传病理检测信息保存到数据库，并删除文件
     if up_form.validate_on_submit():
         for filename in request.files.getlist('filezip'):
             filezips.save(filename)
-        print(os.listdir(current_app.config['UPLOADED_ZIPFILE_DEST']))
+        path_zip = current_app.config['UPLOADED_ZIPFILE_DEST']
+        for file in os.listdir(path_zip):
+            data_sample = pd.read_excel(os.path.join(path_zip, file), sep='/t', encoding='utf-8')
+            df = DataFrame(data_sample)
+            ex_connect = create_engine(current_app.config['SQLALCHEMY_DATABASE_URI'])
+            if '报告收件人' in df.columns:
+                df.to_sql(name='sampleInfo', con=ex_connect, if_exists='replace', index=False)
+            if '报告人' in df.columns:
+                df.to_sql(name='seqInfo', con=ex_connect, if_exists='replace', index=False)
+            os.remove(os.path.join(path_zip, file))
+            # 提示上传成功
     return render_template('seqinfo.html', form=up_form, filename=filename)
 
 

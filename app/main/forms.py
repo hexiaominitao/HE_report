@@ -28,7 +28,12 @@ class RegistFrom(FlaskForm):
 # # patch_request_class(app)
 class SeqGroupForm(FlaskForm):
     filezip = FileField('上传文件', validators=[FileRequired(), FileAllowed(filezips)])
-    submit = SubmitField('上传')
+    submit = SubmitField('病理结果上传')
+
+
+class ReportInfoForm(FlaskForm):
+    filezip = FileField('上传文件', validators=[FileRequired(), FileAllowed(filezips)])
+    submit = SubmitField('样本信息上传')
 
 
 class PhotoForm(FlaskForm):
