@@ -97,7 +97,7 @@ def report_detail(report_id):
     def sample_info(item):
         if (df[df['申请单号'] == sample_id])[item].values:
             try:
-                return str(float((df[df['申请单号'] == sample_id])[item].values))
+                return str(int((df[df['申请单号'] == sample_id])[item].values))
             except:
                 return ''.join((df[df['申请单号'] == sample_id])[item].values)
         else:
