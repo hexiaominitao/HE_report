@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}首页{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index-login-regist.css') }}">
+<style>
+    .sample-info tr {
+        height: 30px;
+    }
+
+    .sample-info {
+        font-family: 微软雅黑;
+        font-size: 15px;
+    }
+
+    .sample-info table {
+        border-collapse: collapse;
+        width: 96%;
+        margin: 0 auto;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<div class="sample-info">
+<table>
+    <caption style="text-align:left">病理报告</caption>
+    {% for row in status %}
+    <tr>
+        <td colspan="4"><a href="url_for('report_detail', report_id={{ row[0] }})">{{ row[0] }}</a></td>
+        <td colspan="4">{{ row[1] }}</td>
+        <td colspan="4"><a href="#">下载</a></td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+{% endblock %}
