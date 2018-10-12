@@ -12,7 +12,7 @@ class Config():
     DIALECT = "mysql"
     DRIVER = 'pymysql'
     USERNAME = 'root'
-    PASSWORD = 'hemin19940910'
+    PASSWORD = 'xxxxxx'
     HOST = '127.0.0.1'
     PORT = '3306'
     DATEBASE = 'db_herep'
@@ -36,7 +36,7 @@ class DevelopmentConfig(Config):
     DIALECT = "mysql"
     DRIVER = 'pymysql'
     USERNAME = 'root'
-    PASSWORD = 'hemin19940910'
+    PASSWORD = 'xxxxxxx'
     HOST = '127.0.0.1'
     PORT = '3306'
     DATEBASE = 'db_herep'
@@ -51,7 +51,7 @@ class TestingConfig(Config):
     DIALECT = "mysql"
     DRIVER = 'pymysql'
     USERNAME = 'root'
-    PASSWORD = 'hemin19940910'
+    PASSWORD = 'xxxxxx'
     HOST = '127.0.0.1'
     PORT = '3306'
     DATEBASE = 'db_herep'
