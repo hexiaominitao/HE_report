@@ -9,17 +9,17 @@ from .. import filezips
 
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
-    password = PasswordField('Password', validators=[DataRequired(), Length(1, 128)])
+    username = StringField('用户名', validators=[DataRequired()])
+    password = PasswordField('密码', validators=[DataRequired(), Length(1, 128)])
     remember = BooleanField('Remember me')
     submit = SubmitField('登录')
 
 
 class RegistFrom(FlaskForm):
-    telephone = StringField('Username', validators=[DataRequired(), Length(1, 11)])
-    username = StringField('Username', validators=[DataRequired(), Length(1, 20)])
-    password = PasswordField('Password', validators=[DataRequired(), Length(1, 128)])
-    password2 = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password2')])
+    telephone = StringField('电话号码', validators=[DataRequired(), Length(1, 11)])
+    username = StringField('用户名', validators=[DataRequired(), Length(1, 20)])
+    password = PasswordField('密码', validators=[DataRequired(), Length(1, 128)])
+    password2 = PasswordField('确认密码', validators=[DataRequired(), EqualTo('password2')])
     submit = SubmitField('注册')
 
 
@@ -28,12 +28,7 @@ class RegistFrom(FlaskForm):
 # # patch_request_class(app)
 class SeqGroupForm(FlaskForm):
     filezip = FileField('上传文件', validators=[FileRequired(), FileAllowed(filezips)])
-    submit = SubmitField('病理结果上传')
-
-
-class ReportInfoForm(FlaskForm):
-    filezip = FileField('上传文件', validators=[FileRequired(), FileAllowed(filezips)])
-    submit = SubmitField('样本信息上传')
+    submit = SubmitField('上传')
 
 
 class PhotoForm(FlaskForm):

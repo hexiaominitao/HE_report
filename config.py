@@ -44,6 +44,7 @@ class DevelopmentConfig(Config):
                                                                            DRIVER, USERNAME, PASSWORD,
                                                                            HOST, PORT, DATEBASE)
     UPLOADED_ZIPFILE_DEST = 'zip'
+    PDF_FILE = 'pdf'
 
 
 class TestingConfig(Config):

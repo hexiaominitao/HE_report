@@ -28,7 +28,7 @@
     <caption style="text-align:left">病理报告</caption>
     {% for row in status %}
     <tr>
-        <td colspan="4"><a href="url_for('report_detail', report_id={{ row[0] }})">{{ row[0] }}</a></td>
+        <td colspan="4"><a href="{{ url_for('main.report_detail', report_id=row[0]) }}">{{ row[0] }}</a></td>
         <td colspan="4">{{ row[1] }}</td>
         <td colspan="4"><a href="#">下载</a></td>
     </tr>
