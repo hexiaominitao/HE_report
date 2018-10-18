@@ -36,7 +36,7 @@ class DevelopmentConfig(Config):
     DIALECT = "mysql"
     DRIVER = 'pymysql'
     USERNAME = 'root'
-    PASSWORD = 'xxxxxxx'
+    PASSWORD = 'hemin19940910'
     HOST = '127.0.0.1'
     PORT = '3306'
     DATEBASE = 'db_herep'
@@ -44,6 +44,7 @@ class DevelopmentConfig(Config):
                                                                            DRIVER, USERNAME, PASSWORD,
                                                                            HOST, PORT, DATEBASE)
     UPLOADED_ZIPFILE_DEST = 'zip'
+    UPLOADED_PHOTOS_DEST = 'app/static/img'
     PDF_FILE = 'pdf'
 
 

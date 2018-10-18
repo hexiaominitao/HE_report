@@ -16,10 +16,21 @@
         </div>
     </div>
 </form>
+<form method="POST" enctype="multipart/form-data">
+    {{ img_form.hidden_tag() }}
+    <div class="from-container">
+        <div class="from-group">
+            {{ img_form.up_photo(multiple="multiple") }}
+        </div>
+        <div class="form-group">
+            {{ img_form.submit(class="btn btn-primary btn-block") }}
+        </div>
+    </div>
+</form>
 <div>
     {% for message in get_flashed_messages() %}
     <div class="alert alert-dismissable">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <button aria-hidden="true" type="button" class="close" data-dismiss="alert">&times;</button>
         {{ message }}
     </div>
     {% endfor %}

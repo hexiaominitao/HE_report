@@ -85,7 +85,7 @@ font-family: 微软雅黑;
             <td>广州迈景基因医学检验所</td>
         </tr>
         <tr>
-            <td style="text-align: left">报告编号：{{ sample_info('申请单号') }}</td>
+            <td style="text-align: left">报告编号：{{ sample_info.申请单号 }}</td>
             <td style="text-align: right;">报告日期：{{ now }}</td>
         </tr>
     </table>
@@ -95,32 +95,32 @@ font-family: 微软雅黑;
 </div>
 <div class="sample-info">
         <table>
-            <caption class="sample-cap">报告编号：{{ sample_info('申请单号') }}</caption>
+            <caption class="sample-cap">报告编号：{{ sample_info.申请单号 }}</caption>
             <tr>
-                <td colspan="3">姓名：{{ sample_info('患者姓名') }}</td>
-                <td colspan="3">性别：{{ sample_info('病人性别') }}</td>
-                <td colspan="3">年龄：{{ sample_info('病人年龄') }}岁</td>
-                <td colspan="3">民族：{{ sample_info('民族') }}</td>
+                <td colspan="3">姓名：{{ sample_info.患者姓名 }}</td>
+                <td colspan="3">性别：{{ sample_info.病人性别 }}</td>
+                <td colspan="3">年龄：{{ sample_info.病人年龄 }}岁</td>
+                <td colspan="3">民族：{{ sample_info.民族 }}</td>
             </tr>
             <tr>
-                <td colspan="4">病理诊断：{{ sample_info('病理诊断') }}</td>
-                <td colspan="4">家族史：{{ sample_info('有无家族遗传疾病') }}</td>
+                <td colspan="4">病理诊断：{{ sample_info.病理诊断 }}</td>
+                <td colspan="4">家族史：{{ sample_info.有无家族遗传疾病 }}</td>
                 <td colspan="4">用药史：</td>
             </tr>
             <tr>
-                <td colspan="4">送检医院：{{ sample_info('医院名称') }}</td>
-                <td colspan="4">送检科室：{{ sample_info('科室') }}</td>
-                <td colspan="4">送检医生：{{ sample_info('医生姓名') }}</td>
+                <td colspan="4">送检医院：{{ sample_info.医院名称 }}</td>
+                <td colspan="4">送检科室：{{ sample_info.科室 }}</td>
+                <td colspan="4">送检医生：{{ sample_info.医生姓名 }}</td>
             </tr>
             <tr>
-                <td colspan="4">样本编码：{{ sample_info('申请单号') }}</td>
+                <td colspan="4">样本编码：{{ sample_info.申请单号 }}</td>
                 <td colspan="4">采样时间：</td>
-                <td colspan="4">收样时间：{{ Time_set((sample_info('收样日期'))) }}</td>
+                <td colspan="4">收样时间：{{ Time_set((sample_info.收样日期)) }}</td>
             </tr>
             <tr>
-                <td colspan="4">样本来源：{{ sample_info('样本来源') }}</td>
-                <td colspan="4">采样方式：{{ sample_info('采样方式') }}</td>
-                <td colspan="4">样本类型：{{ sample_info('样本类型') }}</td>
+                <td colspan="4">样本来源：{{ sample_info.样本来源 }}</td>
+                <td colspan="4">采样方式：{{ sample_info.采样方式 }}</td>
+                <td colspan="4">样本类型：{{ sample_info.样本类型 }}</td>
             </tr>
         </table>
 </div>
@@ -128,27 +128,27 @@ font-family: 微软雅黑;
 <br/>
 <div class="con">
 <p class="item-1"><b style="font-size: 15px">镜下所见：</b></p>
-<p class="content-1">{{ sample_info('镜下所见') }}。</p>
+<p class="content-1">{{ sample_info.镜下所见 }}。</p>
 </div>
 <br/>
 <div class="con">
     <p class="item-1"><b style="font-size: 15px">检测图片：</b></p>
-    <p class="content-1" style="text-align: center;"><img class="img1" src="../static/1.jpg" style="margin-right: 2%">
-        <img class="img1" src="../static/2.jpg">
+    <p class="content-1" style="text-align: center;"><img class="img1" src="../static/img/{{ sample_info.申请单号 }}_1.jpg" style="margin-right: 2%">
+        <img class="img1" src="../static/img/{{ sample_info.申请单号 }}_2.jpg">
     </p>
 </div>
 <br/>
 <div class="con">
     <p class="item-1"><b style="font-size: 15px">病理诊断：</b></p>
-    <p class="content-1">{{ sample_info('病理诊断:') }}。
+    <p class="content-1">{{ sample_info.病理审核 }}。
     </p>
 </div>
 <br/>
 <div class="con">
     <p class="item-1"><b style="font-size: 15px">病理评估：</b></p>
-    <p class="content-1">标本内细胞总量{{ sample_info('细胞总量') }}个;肿瘤细胞含量为{{ sample_info('肿瘤比例') }}%。
+    <p class="content-1">标本内细胞总量{{ sample_info.标本内细胞总量 }}个;肿瘤细胞含量为{{ sample_info.肿瘤细胞含量 }}%。
         <br>
-        特殊说明:{{ sample_info('特殊说明:') }}
+        特殊说明:{{ sample_info.特殊说明 }}
     </p>
 </div>
 <br/>
@@ -157,14 +157,14 @@ font-family: 微软雅黑;
 <div class="foot-info">
     <table class="foot-table1">
         <tr>
-        <td colspan="1">收样时间：{{ Time_set((sample_info('收样日期'))) }}</td>
-        <td colspan="1">检测日期：{{ Time_set((sample_info('检测日期'))) }}</td>
+        <td colspan="1">收样时间：{{ Time_set((sample_info.收样日期)) }}</td>
+        <td colspan="1">检测日期：{{ Time_set((sample_info.检测日期)) }}</td>
         <td colspan="1">报告日期：{{ now }}</td>
     </tr>
 </table>
 <table class="foot-table2">
     <tr>
-        <td>报告人：{{ sample_info('报告人') }}</td>
+        <td>报告人：{{ sample_info.病理报告人 }}</td>
         <td>审核人：</td>
     </tr>
 </table>

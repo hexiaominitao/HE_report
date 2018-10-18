@@ -5,7 +5,7 @@ from wtforms import StringField, SubmitField, SelectField, TextAreaField, Valida
 from wtforms.validators import DataRequired, Email, Length, Optional, URL, EqualTo, Required
 from flask_wtf.file import FileField, FileRequired, FileAllowed
 
-from .. import filezips
+from .. import filezips, photos
 
 
 class LoginForm(FlaskForm):
@@ -32,5 +32,5 @@ class SeqGroupForm(FlaskForm):
 
 
 class PhotoForm(FlaskForm):
-    photo = FileField(validators=[FileRequired()])
-    submit = SubmitField('上传')
+    up_photo = FileField(validators=[FileRequired(), FileAllowed(photos)])
+    submit = SubmitField('上传图片')
