@@ -3,6 +3,7 @@
 {% block title %}首页{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index-login-regist.css') }}">
+<script src="{{ url_for('static', filename='laydate/laydate.js') }}"></script>
 <style>
     .sample-info tr {
         height: 30px;
@@ -20,12 +21,29 @@
         border-top: 2px solid black;
         border-bottom: 2px solid black;
     }
+
+    .demo-input {
+        padding-left: 10px;
+        height: 38px;
+        min-width: 262px;
+        line-height: 38px;
+        border: 1px solid #e6e6e6;
+        background-color: #fff;
+        border-radius: 2px;
+    }
 </style>
+
 {% endblock %}
 {% block content %}
+<form method="post">
+    <span>
+        <input type="text" class="demo-input" placeholder="请选择日期" id="report_data" name="data">
+        <button>确定</button>
+    </span>
+</form>
 <div class="sample-info">
 <table>
-    <caption style="text-align:left">病理报告</caption>
+    <caption style="text-align:left">病理报告   {{ now }}</caption>
     {% for row in status %}
     <tr>
         <td colspan="4"><a href="{{ url_for('main.report_detail', report_id=row[0]) }}">{{ row[0] }}</a></td>
@@ -35,4 +53,12 @@
     {% endfor %}
 </table>
 </div>
+<script>
+lay('#version').html('-v'+ laydate.v);
+
+//执行一个laydate实例
+laydate.render({
+  elem: '#report_data' //指定元素
+});
+</script>
 {% endblock %}

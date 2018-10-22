@@ -17,30 +17,21 @@
 <h1>迈景基因病理报告系统测试版</h1>
 <ul>
     <li><p>查看报告选择<b style="color: #2aabd2"><a href="{{ url_for('main.report') }}">报告</a></b></p></li>
-    <li>下载功能还未上线</li>
-    <li><a href="{{ url_for('main.heinfo') }}">上传文件</a>病理结果文件如下格式：(注意<b>病理诊断:</b>和<b>特殊说明:</b>有冒号)
+    <li><a href="{{ url_for('main.heinfo') }}">上传文件</a>病理结果文件如下格式(只需包含这7项就行):
         <table>
             <tr>
-                <th>申请单号</th>
+                <th>迈景单号</th>
                 <th>镜下所见</th>
-                <th>病理诊断:</th>
+                <th>病理诊断</th>
                 <th>细胞总量</th>
                 <th>肿瘤比例</th>
-                <th>特殊说明:</th>
+                <th>特殊说明</th>
                 <th>报告人</th>
-            </tr>
-            <tr>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
-                <td> </td>
             </tr>
         </table>
     </li>
     <li>需要上传样本信息登记表</li>
+    <li><a href="{{ url_for('main.heinfo') }}">上传图片</a>：以迈景编号加_n(N表示第几张图片)命名（eg:MG123456_1.JPG)。</li>
 </ul>
 
 {% endblock %}

@@ -86,15 +86,18 @@ def regist():
     return render_template('regist1.html', form=re_form)
 
 
-@main.route('/report/')
+@main.route('/report/', methods=['GET', 'POST'])
 def report():
-    now = datetime.datetime.now().strftime('%Y-%m-%d')
-    print(now)
+    if request.method == 'GET':
+        now = ''
+    else:
+        now = request.form.get('data')
+    print('111{}111'.format(now))
     df = HeInfo.query.filter(HeInfo.病理报告时间.startswith(str(now))).all()
     status = []
     for i in df:
         status.extend([[i.申请单号, i.病理审核]])
-    return render_template('report.html', status=status)
+    return render_template('report.html', status=status, now=now)
 
 
 @main.route('/pdf/<filename>')
@@ -139,6 +142,10 @@ def heinfo():
     filename = None
     up_form = SeqGroupForm()
     img_form = PhotoForm()
+    if request.method == 'GET':
+        path_zip = current_app.config['UPLOADED_ZIPFILE_DEST']
+        for file in os.listdir(path_zip):
+            os.remove(os.path.join(path_zip, file))
     if img_form.validate_on_submit():
         for filename in request.files.getlist('up_photo'):
             photos.save(filename)
@@ -160,6 +167,7 @@ def heinfo():
             wb_e = xlrd.open_workbook(os.path.join(path_zip, file))
             table = wb_e.sheets()[0]
             title_ex = table.row_values(0)
+            print(title_ex)
             id_sa = title_ex.index('迈景编号')
             cols = table.col_values(id_sa)
             cols.pop(0)
