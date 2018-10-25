@@ -5,9 +5,10 @@ HE report sys
 2. $ cd HE_report
 3. 创建PYTHON3 虚拟环境 $ pythopn3 -m venv flask_venv
 4. 激活环境 $ source flask_venv/bin/activate
-5. 创建数据库，根据config配置
-6. 初始化数据库： $ python3 manage.py db init
+5. 创建/path/to/your_env_file 并使环境变量生效 $ source /path/to/your_env_file
+6. 创建数据库，根据config配置
+7. 初始化数据库： $ python3 manage.py db init
 	        $ python3 manage.py db migrate
 	        $ python3 manage.py db upgrade
-7. 运行项目 $ python3 manage.py runserver [--host=0.0.0.0]
+8. 运行项目 $ python3 manage.py runserver [--host=0.0.0.0]
 

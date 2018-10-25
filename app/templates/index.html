@@ -20,7 +20,7 @@
     <li><a href="{{ url_for('main.heinfo') }}">上传文件</a>病理结果文件如下格式(只需包含这7项就行):
         <table>
             <tr>
-                <th>迈景单号</th>
+                <th>迈景编号</th>
                 <th>镜下所见</th>
                 <th>病理诊断</th>
                 <th>细胞总量</th>
@@ -31,7 +31,7 @@
         </table>
     </li>
     <li>需要上传样本信息登记表</li>
-    <li><a href="{{ url_for('main.heinfo') }}">上传图片</a>：以迈景编号加_n(N表示第几张图片)命名（eg:MG123456_1.JPG)。</li>
+    <li><a href="{{ url_for('main.heinfo') }}">上传图片</a>：以迈景编号加_n(n表示第几张图片)命名（eg:MG123456_1.JPG)。</li>
 </ul>
 
 {% endblock %}

@@ -84,7 +84,7 @@ class HeInfo(db.Model):
     不出报告原因 = db.Column(db.String(200), nullable=True)
     录入 = db.Column(db.String(50), nullable=True)
     审核 = db.Column(db.String(50), nullable=True)
-    病理报告时间 = db.Column(db.DateTime, index=True)
+    病理报告时间 = db.Column(db.Date, index=True)
 
     def __reper__(seif):
         return '<Note %r>' % seif.body

@@ -9,7 +9,7 @@
     {{ form.hidden_tag() }}
     <div class="from-container">
         <div class="from-group">
-            {{ form.filezip(multiple="multiple") }}
+            {{ form.filezip(multiple="multiple",class="btn btn-primary btn-block") }}
         </div>
         <div class="form-group">
             {{ form.submit(class="btn btn-primary btn-block") }}
@@ -18,9 +18,9 @@
 </form>
 <form method="POST" enctype="multipart/form-data">
     {{ img_form.hidden_tag() }}
-    <div class="from-container">
+    <div class="input-append">
         <div class="from-group">
-            {{ img_form.up_photo(multiple="multiple") }}
+            {{ img_form.up_photo(multiple="multiple",class="btn btn-primary btn-block") }}
         </div>
         <div class="form-group">
             {{ img_form.submit(class="btn btn-primary btn-block") }}

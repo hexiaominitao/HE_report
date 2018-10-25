@@ -92,21 +92,29 @@ def report():
         now = ''
     else:
         now = request.form.get('data')
-    print('111{}111'.format(now))
     df = HeInfo.query.filter(HeInfo.病理报告时间.startswith(str(now))).all()
     status = []
     for i in df:
-        status.extend([[i.申请单号, i.病理审核]])
+        status.extend([[i.申请单号, i.迈景编号, i.病理审核]])
     return render_template('report.html', status=status, now=now)
 
 
-@main.route('/pdf/<filename>')
+@main.route('/pdf/<filename>')  #文件下载
 def report_download(filename):
+    options = {
+        'page-size': 'A4',
+        'margin-top': '0.75in',
+        'margin-right': '0.01in',
+        'margin-bottom': '0.1in',
+        'margin-left': '0.01in'}
+    path = os.path.join(os.getcwd(), current_app.config['PDF_FILE'])
+    if not os.path.exists(path):
+        os.mkdir(path)
     report_id = filename.strip('.pdf')
     pdffile = os.path.join(current_app.config['PDF_FILE'], filename)
     url_report = 'http://localhost:5000/report/{}'.format(report_id)
-    pdfkit.from_url(url_report, pdffile)
-    path = os.path.join(os.getcwd(),current_app.config['PDF_FILE'])
+    pdfkit.from_url(url_report, pdffile, options=options)  #生成pdf
+
     return send_from_directory(path, filename=filename, as_attachment=True)
 
 

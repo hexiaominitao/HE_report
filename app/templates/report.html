@@ -38,7 +38,7 @@
 <form method="post">
     <span>
         <input type="text" class="demo-input" placeholder="请选择日期" id="report_data" name="data">
-        <button>确定</button>
+        <button class="btn btn-default">确定</button>
     </span>
 </form>
 <div class="sample-info">
@@ -48,6 +48,7 @@
     <tr>
         <td colspan="4"><a href="{{ url_for('main.report_detail', report_id=row[0]) }}">{{ row[0] }}</a></td>
         <td colspan="4">{{ row[1] }}</td>
+        <td colspan="4">{{ row[2] }}</td>
         <td colspan="4"><a href="{{ url_for('main.report_download', filename='{}.pdf'.format(row[0])) }}">下载</a></td>
     </tr>
     {% endfor %}
