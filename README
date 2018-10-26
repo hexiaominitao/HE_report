@@ -10,5 +10,5 @@ HE report sys
 7. 初始化数据库： $ python3 manage.py db init
 	        $ python3 manage.py db migrate
 	        $ python3 manage.py db upgrade
-8. 运行项目 $ python3 manage.py runserver [--host=0.0.0.0]
+8. 运行项目 $ python3 manage.py runserver [--host=0.0.0.0] 
 

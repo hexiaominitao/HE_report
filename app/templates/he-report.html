@@ -3,78 +3,95 @@
 {% block content %}
 <body>
 <style>
-.report-title{
-    text-align: center;
-    font-family: 微软雅黑;
-    font-size: 20px;
-}
-.sample-info{
-    font-family: 微软雅黑;
-    font-size: 15px;
-}
-.sample-info table{
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0 auto;
-    border-top: 2px solid black;
-    border-bottom: 2px dashed black;
-}
-.foot-table1{
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0 auto;
-    border-bottom: 1.5px dashed black;
-}
-.sample-cap{
-font-family: 微软雅黑;
-    font-size: 15px;
-    text-align:right;
-    color: black;
-}
-.foot-table2{
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0 auto;
-    border-bottom: 1.5px solid black;
-}
-.foot-table3{
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0 auto;
-    border-bottom: 2px solid black;
-    font-size: 12px;
-}
-.foot-info tr{
-    height: 40px;
-}
-.sample-info tr{
-    height: 30px;
-}
-.report-header table{
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0 auto;
-    border-bottom: 1px solid black;
-}
-.item-1{
-    float: left;
-    margin-left: 2%; 
-    margin-right: 1%;
-    vertical-align: top;
-    margin-top: auto;
-}
-.content-1{
-    margin-right: 2%;
-    overflow: hidden;
-    margin-top: auto;
+    html body {
+        height: 100%;
+    }
 
-}
-.con{
-    display: inline;
-}
-.img1{
-    width: 200px;
-}
+    .report-title {
+        text-align: center;
+        font-family: 微软雅黑;
+        font-size: 20px;
+    }
+
+    .sample-info {
+        font-family: 微软雅黑;
+        font-size: 15px;
+    }
+
+    .sample-info table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 0 auto;
+        border-top: 2px solid black;
+        border-bottom: 2px dashed black;
+    }
+
+    .foot-table1 {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 0 auto;
+        border-bottom: 1.5px dashed black;
+    }
+
+    .sample-cap {
+        font-family: 微软雅黑;
+        font-size: 15px;
+        text-align: right;
+        color: black;
+    }
+
+    .foot-table2 {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 0 auto;
+        border-bottom: 1.5px solid black;
+    }
+
+    .foot-table3 {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 0 auto;
+        border-bottom: 2px solid black;
+        font-size: 12px;
+    }
+
+    .foot-info tr {
+        height: 40px;
+    }
+
+    .sample-info tr {
+        height: 30px;
+    }
+
+    .report-header table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 0 auto;
+        border-bottom: 1px solid black;
+    }
+
+    .item-1 {
+        float: left;
+        margin-left: 2%;
+        margin-right: 1%;
+        vertical-align: top;
+        margin-top: auto;
+    }
+
+    .content-1 {
+        margin-right: 2%;
+        overflow: hidden;
+        margin-top: auto;
+
+    }
+
+    .con {
+        display: inline;
+    }
+
+    .img1 {
+        width: 200px;
+    }
 </style>
 <header class="report-header">
     <table>
@@ -94,46 +111,47 @@ font-family: 微软雅黑;
     <h1>病理评估报告</h1>
 </div>
 <div class="sample-info">
-        <table>
-            <caption class="sample-cap">报告编号：{{ sample_info.申请单号 }}</caption>
-            <tr>
-                <td colspan="3">姓名：{{ sample_info.患者姓名 }}</td>
-                <td colspan="3">性别：{{ sample_info.病人性别 }}</td>
-                <td colspan="3">年龄：{{ sample_info.病人年龄 }}岁</td>
-                <td colspan="3">民族：{{ sample_info.民族 }}</td>
-            </tr>
-            <tr>
-                <td colspan="6">病理诊断：{{ sample_info.病理诊断 }}</td>
-                <td colspan="3">家族史：{{ sample_info.有无家族遗传疾病 }}</td>
-                <td colspan="3">用药史：</td>
-            </tr>
-            <tr>
-                <td colspan="6">送检医院：{{ sample_info.医院名称 }}</td>
-                <td colspan="3">送检科室：{{ sample_info.科室 }}</td>
-                <td colspan="3">送检医生：{{ sample_info.医生姓名 }}</td>
-            </tr>
-            <tr>
-                <td colspan="6">样本编码：{{ sample_info.申请单号 }}</td>
-                <td colspan="3">采样时间：</td>
-                <td colspan="3">收样时间：{{ Time_set((sample_info.收样日期)) }}</td>
-            </tr>
-            <tr>
-                <td colspan="6">样本来源：{{ sample_info.样本来源 }}</td>
-                <td colspan="3">采样方式：{{ sample_info.采样方式 }}</td>
-                <td colspan="3">样本类型：{{ sample_info.样本类型 }}</td>
-            </tr>
-        </table>
+    <table>
+        <caption class="sample-cap">报告编号：{{ sample_info.申请单号 }}</caption>
+        <tr>
+            <td colspan="3">姓名：{{ sample_info.患者姓名 }}</td>
+            <td colspan="3">性别：{{ sample_info.病人性别 }}</td>
+            <td colspan="3">年龄：{{ sample_info.病人年龄 }}岁</td>
+            <td colspan="3">民族：{{ sample_info.民族 }}</td>
+        </tr>
+        <tr>
+            <td colspan="6">病理诊断：{{ sample_info.病理诊断 }}</td>
+            <td colspan="3">家族史：{{ sample_info.有无家族遗传疾病 }}</td>
+            <td colspan="3">用药史：</td>
+        </tr>
+        <tr>
+            <td colspan="6">送检医院：{{ sample_info.医院名称 }}</td>
+            <td colspan="3">送检科室：{{ sample_info.科室 }}</td>
+            <td colspan="3">送检医生：{{ sample_info.医生姓名 }}</td>
+        </tr>
+        <tr>
+            <td colspan="6">样本编码：{{ sample_info.申请单号 }}</td>
+            <td colspan="3">采样时间：</td>
+            <td colspan="3">收样时间：{{ Time_set((sample_info.收样日期)) }}</td>
+        </tr>
+        <tr>
+            <td colspan="6">样本来源：{{ sample_info.样本来源 }}</td>
+            <td colspan="3">采样方式：{{ sample_info.采样方式 }}</td>
+            <td colspan="3">样本类型：{{ sample_info.样本类型 }}</td>
+        </tr>
+    </table>
 </div>
 <br/>
 <br/>
 <div class="con">
-<p class="item-1"><b style="font-size: 15px">镜下所见：</b></p>
-<p class="content-1">{{ sample_info.镜下所见 }}。</p>
+    <p class="item-1"><b style="font-size: 15px">镜下所见：</b></p>
+    <p class="content-1">{{ sample_info.镜下所见 }}。</p>
 </div>
 <br/>
 <div class="con">
     <p class="item-1"><b style="font-size: 15px">检测图片：</b></p>
-    <p class="content-1" style="text-align: left;"><img class="img1" src="../static/img/{{ sample_info.迈景编号 }}_1.jpg" style="margin-right: 2%">
+    <p class="content-1" style="text-align: left;"><img class="img1" src="../static/img/{{ sample_info.迈景编号 }}_1.jpg"
+                                                        style="margin-right: 2%">
         <img class="img1" src="../static/img/{{ sample_info.迈景编号 }}_2.jpg">
     </p>
 </div>
@@ -157,22 +175,23 @@ font-family: 微软雅黑;
 <div class="foot-info">
     <table class="foot-table1">
         <tr>
-        <td colspan="1">收样时间：{{ Time_set((sample_info.收样日期)) }}</td>
-        <td colspan="1">检测日期：{{ Time_set((sample_info.检测日期)) }}</td>
-        <td colspan="1">报告日期：{{ sample_info.病理报告时间 }}</td>
-    </tr>
-</table>
-<table class="foot-table2">
-    <tr>
-        <td>报告人：{{ sample_info.病理报告人 }}</td>
-        <td>审核人：</td>
-    </tr>
-</table>
-<table class="foot-table3">
+            <td colspan="1">收样时间：{{ Time_set((sample_info.收样日期)) }}</td>
+            <td colspan="1">检测日期：{{ Time_set((sample_info.检测日期)) }}</td>
+            <td colspan="1">报告日期：{{ sample_info.病理报告时间 }}</td>
+        </tr>
+    </table>
+    <table class="foot-table2">
+        <tr>
+            <td>报告人：{{ sample_info.病理报告人 }}</td>
+            <td>审核人：</td>
+        </tr>
+    </table>
+    <table class="foot-table3">
         <tr>
             <td>实验室地址:广州国际生物岛螺旋四路9号4栋五层A501单元&nbsp;&nbsp;
-                    邮编:510300&nbsp;&nbsp;
-                    联系电话:020-89637656</td>
+                邮编:510300&nbsp;&nbsp;
+                联系电话:020-89637656
+            </td>
         </tr>
     </table>
 </div>

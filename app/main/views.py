@@ -8,11 +8,23 @@ from flask import render_template, redirect, session, url_for, request, current_
 from werkzeug import security
 from sqlalchemy import create_engine
 from flask_restful import request as req
+from functools import wraps
 
 from . import main
 from .. import db, filezips, photos
 from app.models import User, HeInfo, SampleInfo
 from .forms import LoginForm, SeqGroupForm, RegistFrom, PhotoForm
+
+
+
+def login_request(func): #登录限制装饰器
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if session.get('user_id'):
+            return func(*args, **kwargs)
+        else:
+            return redirect(url_for('main.login'))
+    return wrapper
 
 
 @main.route('/', methods=['GET', 'POST'])
@@ -86,17 +98,29 @@ def regist():
     return render_template('regist1.html', form=re_form)
 
 
+
 @main.route('/report/', methods=['GET', 'POST'])
+@login_request
 def report():
-    if request.method == 'GET':
-        now = ''
+    now = request.form.get('data')
+    if now:
+        df = {
+            'status': HeInfo.query.filter(HeInfo.病理报告时间.startswith(str(now))).all()
+        }
     else:
-        now = request.form.get('data')
-    df = HeInfo.query.filter(HeInfo.病理报告时间.startswith(str(now))).all()
-    status = []
-    for i in df:
-        status.extend([[i.申请单号, i.迈景编号, i.病理审核]])
-    return render_template('report.html', status=status, now=now)
+        now = ''
+        df = {
+            'status': HeInfo.query.all()
+        }
+    # if request.method == 'GET':
+    #     now = ''
+    # else:
+    #     now = request.form.get('data')
+    # df = HeInfo.query.filter(HeInfo.病理报告时间.startswith(str(now))).all()
+    # status = []
+    # for i in df:
+    #     status.extend([[i.申请单号, i.迈景编号, i.病理审核]])
+    return render_template('report.html', **df, now=now)
 
 
 @main.route('/pdf/<filename>')  #文件下载
@@ -118,6 +142,16 @@ def report_download(filename):
     return send_from_directory(path, filename=filename, as_attachment=True)
 
 
+@main.route('/report/', methods=['GET','POST'])
+def search():
+    report_id = request.form.get('rep_id')
+    print(report_id)
+    df = {
+        'status': HeInfo.query.filter(HeInfo.申请单号 == report_id).all()
+    }
+    now = ''
+    return render_template('report.html', **df, now=now)
+
 # @main.route('/imginfo/', methods=['GET', 'POST'])
 # def imginfo():
 #     img_form = PhotoForm()
@@ -133,9 +167,9 @@ def report_detail(report_id):
         T = get_time[0: 4] + '-' + get_time[4: 6] + '-' + get_time[6: 8]
         return T
     sample_info = HeInfo.query.filter(HeInfo.申请单号 == report_id).first()
-    now = datetime.datetime.now().strftime('%Y-%m-%d')
-    url_report = str(req.url)  #得到当前网页的url
-    return render_template('he-report.html', now=now, sample_info=sample_info, Time_set=Time_set)
+    # now = datetime.datetime.now().strftime('%Y-%m-%d')
+    # url_report = str(req.url)  #得到当前网页的url
+    return render_template('he-report.html', sample_info=sample_info, Time_set=Time_set)
 
 
 
@@ -146,6 +180,7 @@ def excel_rd(path_xl):
 
 
 @main.route('/heinfo/', methods=['GET', 'POST'])
+@login_request
 def heinfo():
     filename = None
     up_form = SeqGroupForm()
@@ -326,3 +361,5 @@ def my_context_processor():
         if user:
             return {'user': user}
     return {}
+
+
