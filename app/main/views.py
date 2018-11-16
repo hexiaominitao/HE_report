@@ -108,7 +108,7 @@ def report():
             'status': HeInfo.query.filter(HeInfo.病理报告时间.startswith(str(now))).all()
         }
     else:
-        now = ''
+        now = '全部报告'
         df = {
             'status': HeInfo.query.all()
         }

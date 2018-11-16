@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% import "bootstrap/wtf.html" as wtf %}
 {% block title %}首页{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index-login-regist.css') }}">
@@ -13,10 +12,12 @@
         font-family: 微软雅黑;
         font-size: 15px;
     }
+    .sample-info caption{
+        text-align: left;
+    }
 
     .sample-info table {
         border-collapse: collapse;
-        width: 96%;
         margin: 0 auto;
         border-top: 2px solid black;
         border-bottom: 2px solid black;
@@ -42,17 +43,21 @@
     </span>
 </form>
 <div class="sample-info">
-<table>
+    {% if status %}
+<table style="border-collapse: collapse;">
     <caption style="text-align:left">病理报告   {{ now }}</caption>
     {% for row in status %}
     <tr>
         <td colspan="4"><a href="{{ url_for('main.report_detail', report_id=row.申请单号) }}">{{ row.申请单号 }}</a></td>
         <td colspan="4">{{ row.迈景编号 }}</td>
         <td colspan="4">{{ row.病理审核 }}</td>
-        <td colspan="4"><a href="{{ url_for('main.report_download', filename='{}.pdf'.format(row.申请单号)) }}">下载</a></td>
+        <td colspan="4"><button class="btn btn-default"><a href="{{ url_for('main.report_download', filename='{}.pdf'.format(row.申请单号)) }}">下载</a></button></td>
     </tr>
     {% endfor %}
 </table>
+    {% else %}
+    <p>{{ now }}</p>
+    {% endif %}
 </div>
 <script>
 lay('#version').html('-v'+ laydate.v);
