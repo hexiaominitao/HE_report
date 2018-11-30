@@ -1,5 +1,5 @@
 .form-container{
-    width:auto;
+    width:30%;
     margin: 0 auto;
 }
 
@@ -20,6 +20,9 @@
 }
 
 .ifarm-content{
-    width: 100%;
+    width: 20%;
     height: 500px;
+}
+.file-upload{
+    width: 20%;
 }

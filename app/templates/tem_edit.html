@@ -1,0 +1,15 @@
+{% extends "user.html" %}
+{% block head_usr %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tem_edit.css') }}">
+{% endblock %}
+{% block temedit %}
+<form action="">
+    <input type="color" name="color_ch">
+    <button type="submit">提交</button>
+</form>
+
+<p class="change-color {{ color }}-color">hello</p>
+
+<script src="{{ url_for('static', filename='js/tem_edit.js') }}">
+</script>
+{% endblock %}

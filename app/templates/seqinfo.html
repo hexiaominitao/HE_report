@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index-login-regist.css') }}">
 {% endblock %}
 {% block content %}
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" class="file-upload">
     {{ form.hidden_tag() }}
     <div class="from-container">
         <div class="from-group">
@@ -16,7 +16,7 @@
         </div>
     </div>
 </form>
-<form method="POST" enctype="multipart/form-data">
+<form method="POST" enctype="multipart/form-data" class="file-upload">
     {{ img_form.hidden_tag() }}
     <div class="input-append">
         <div class="from-group">
@@ -27,7 +27,7 @@
         </div>
     </div>
 </form>
-<div>
+<div class="file-upload">
     {% for message in get_flashed_messages() %}
     <div class="alert alert-dismissable">
         <button aria-hidden="true" type="button" class="close" data-dismiss="alert">&times;</button>

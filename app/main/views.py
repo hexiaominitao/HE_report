@@ -29,16 +29,27 @@ def login_request(func): #登录限制装饰器
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
+
     return render_template('index.html')
 
 
 
-@main.route('/seqinfo/')
-def seqinfo():
+@main.route('/userinfo/')
+def userinfo():
+
     return render_template('user.html')
 
 
-@main.route('/login/', methods=['GET', 'POST'])
+@main.route('/userinfo/templateEdit/', methods=['GET', 'POST']) #模板修改
+def tem_edit():
+    # color = "blue"
+    if request.method == "POST":
+        color = request.form.get('color-ch')
+        print(color)
+    return render_template('tem_edit.html')
+
+
+@main.route('/login/', methods=['GET', 'POST']) #登录
 def login():
     form = LoginForm()
     if request.method == 'GET':
@@ -56,21 +67,6 @@ def login():
         else:
             return redirect(url_for('main.regist'))
 
-
-# @main.route('/login1/', methods=["GET", "POST"])
-# def login1():
-#     if request.method == 'GET':
-#         return render_template('login.html')
-#     else:
-#         username = request.form.get('username')
-#         password = request.form.get('password')
-#         user = User.query.filter(User.username == username, User.password == password).first()
-#         if user:
-#             session['user_id'] = user.id
-#             session.permanent = True
-#             return redirect(url_for('main.index'))
-#         else:
-#             return redirect(url_for('main.regist'))
 
 
 @main.route("/logout/")
@@ -351,6 +347,23 @@ def heinfo():
 #                 db.session.add(user)
 #                 db.session.commit()
 #                 return redirect(url_for('main.login'))
+
+# @main.route('/login1/', methods=["GET", "POST"])
+# def login1():
+#     if request.method == 'GET':
+#         return render_template('login.html')
+#     else:
+#         username = request.form.get('username')
+#         password = request.form.get('password')
+#         user = User.query.filter(User.username == username, User.password == password).first()
+#         if user:
+#             session['user_id'] = user.id
+#             session.permanent = True
+#             return redirect(url_for('main.index'))
+#         else:
+#             return redirect(url_for('main.regist'))
+
+
 
 
 @main.context_processor

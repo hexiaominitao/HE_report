@@ -35,3 +35,6 @@ class PhotoForm(FlaskForm):
     up_photo = FileField(validators=[FileRequired(), FileAllowed(photos)])
     submit = SubmitField('上传图片')
 
+
+class SampleInfoForm(FlaskForm):
+    pass

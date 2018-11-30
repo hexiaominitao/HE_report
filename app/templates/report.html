@@ -12,13 +12,14 @@
         font-family: 微软雅黑;
         font-size: 15px;
     }
-    .sample-info caption{
+
+    .sample-info caption {
         text-align: left;
     }
 
     .sample-info table {
         border-collapse: collapse;
-        margin: 0 auto;
+        /*margin: 0 auto;*/
         border-top: 2px solid black;
         border-bottom: 2px solid black;
     }
@@ -36,7 +37,7 @@
 
 {% endblock %}
 {% block content %}
-<form method="post">
+<form method="post" class="data-input">
     <span>
         <input type="text" class="demo-input" placeholder="请选择日期" id="report_data" name="data">
         <button class="btn btn-default">确定</button>
@@ -44,27 +45,34 @@
 </form>
 <div class="sample-info">
     {% if status %}
-<table style="border-collapse: collapse;">
-    <caption style="text-align:left">病理报告   {{ now }}</caption>
-    {% for row in status %}
-    <tr>
-        <td colspan="4"><a href="{{ url_for('main.report_detail', report_id=row.申请单号) }}">{{ row.申请单号 }}</a></td>
-        <td colspan="4">{{ row.迈景编号 }}</td>
-        <td colspan="4">{{ row.病理审核 }}</td>
-        <td colspan="4"><button class="btn btn-default"><a href="{{ url_for('main.report_download', filename='{}.pdf'.format(row.申请单号)) }}">下载</a></button></td>
-    </tr>
-    {% endfor %}
-</table>
-    {% else %}
-    <p>{{ now }}</p>
+    <table style="border-collapse: collapse;" class="table table-striped table-condensed">
+        <caption style="text-align:left">病理报告 {{ now }}</caption>
+        <tr>
+            <th>申请单号</th>
+            <th>迈景编号</th>
+            <th>病理审核</th>
+            <th>下载</th>
+        </tr>
+        {% for row in status %}
+        <tr>
+            <td><a href="{{ url_for('main.report_detail', report_id=row.申请单号) }}">{{ row.申请单号 }}</a></td>
+            <td>{{ row.迈景编号 }}</td>
+            <td>{{ row.病理审核 }}</td>
+            <td>
+                <button class="btn btn-default"><a
+                        href="{{ url_for('main.report_download', filename='{}.pdf'.format(row.申请单号)) }}">下载</a></button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
     {% endif %}
 </div>
 <script>
-lay('#version').html('-v'+ laydate.v);
+    lay('#version').html('-v' + laydate.v);
 
-//执行一个laydate实例
-laydate.render({
-  elem: '#report_data' //指定元素
-});
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#report_data' //指定元素
+    });
 </script>
 {% endblock %}

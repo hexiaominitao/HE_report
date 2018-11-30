@@ -2,7 +2,23 @@
 {% block title %}用户{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% block head_usr %}{% endblock %}
 {% endblock %}
 {% block content %}
-<p>hello</p>
+<div class="nav-side-left navbar-collapse con row">
+    <ul class="nav nav-left item-ul col-md-1">
+        <li class="bar-user">
+            <a href="#">
+                {{ user.username}}
+            </a>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-fw fa-home"></i> 报告统计</a>
+        </li>
+        <li>
+            <a href="{{ url_for('main.tem_edit') }}"><i class="fa fa-fw fa-folder"></i> 模板修改</a>
+        </li>
+    </ul>
+    <div class="item-div col-md-11">{% block temedit %}{% endblock %}</div>
+</div>
 {% endblock %}
