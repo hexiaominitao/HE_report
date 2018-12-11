@@ -1,4 +1,4 @@
-import os, datetime
+import os, datetime, csv
 
 import pdfkit
 import xlrd
@@ -16,31 +16,67 @@ from app.models import User, HeInfo, SampleInfo
 from .forms import LoginForm, SeqGroupForm, RegistFrom, PhotoForm
 
 
+from concurrent.futures import ThreadPoolExecutor
 
-def login_request(func): #登录限制装饰器
+from ..exi import watch_dir
+
+
+def login_request(func):  # 登录限制装饰器
     @wraps(func)
     def wrapper(*args, **kwargs):
         if session.get('user_id'):
             return func(*args, **kwargs)
         else:
             return redirect(url_for('main.login'))
+
     return wrapper
+
+
+
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
-
     return render_template('index.html')
-
 
 
 @main.route('/userinfo/')
 def userinfo():
-
     return render_template('user.html')
 
+## 报告系统
+@main.route('/mg_report/', methods=['GET', 'POST'])  # NGS报告
+@login_request
+def mg_report():
+    return render_template('mg-report.html')
 
-@main.route('/userinfo/templateEdit/', methods=['GET', 'POST']) #模板修改
+
+@main.route('/mg_report/fastqc/', methods=['GET', 'POST'])
+@login_request
+def fastqc():
+    return render_template('fastqc.html')
+
+
+@main.route('/mg_report/bamqc/', methods=['GET', 'POST'])
+@login_request
+def bamqc():
+    return render_template('bamqc.html')
+
+
+@main.route('/sample_info/', methods=['GET', 'POST'])  # 样本信息
+@login_request
+def sample_info():
+    report_id = (request.url).split('=')[-1]
+    print(report_id)
+    df = {
+        'status_all': SampleInfo.query.all(),
+        'status': SampleInfo.query.filter(SampleInfo.迈景编号 == report_id).all()
+    }
+    return render_template('sample-info.html', **df)
+
+
+@main.route('/userinfo/templateEdit/', methods=['GET', 'POST'])  # 模板修改
+@login_request
 def tem_edit():
     # color = "blue"
     if request.method == "POST":
@@ -49,7 +85,7 @@ def tem_edit():
     return render_template('tem_edit.html')
 
 
-@main.route('/login/', methods=['GET', 'POST']) #登录
+@main.route('/login/', methods=['GET', 'POST'])  # 登录
 def login():
     form = LoginForm()
     if request.method == 'GET':
@@ -68,8 +104,7 @@ def login():
             return redirect(url_for('main.regist'))
 
 
-
-@main.route("/logout/")
+@main.route("/logout/")  # 注销
 def logout():
     # session.clear
     # session.pop('user_id')
@@ -77,7 +112,7 @@ def logout():
     return redirect(url_for('main.login'))
 
 
-@main.route('/regist/', methods=["GET", "POST"])
+@main.route('/regist/', methods=["GET", "POST"])  # 注册
 def regist():
     re_form = RegistFrom()
     if re_form.validate_on_submit():
@@ -94,8 +129,7 @@ def regist():
     return render_template('regist1.html', form=re_form)
 
 
-
-@main.route('/report/', methods=['GET', 'POST'])
+@main.route('/report/', methods=['GET', 'POST'])  # 报告
 @login_request
 def report():
     now = request.form.get('data')
@@ -119,7 +153,7 @@ def report():
     return render_template('report.html', **df, now=now)
 
 
-@main.route('/pdf/<filename>')  #文件下载
+@main.route('/pdf/<filename>')  # 文件下载
 def report_download(filename):
     options = {
         'page-size': 'A4',
@@ -133,20 +167,23 @@ def report_download(filename):
     report_id = filename.strip('.pdf')
     pdffile = os.path.join(current_app.config['PDF_FILE'], filename)
     url_report = 'http://localhost:5000/report/{}'.format(report_id)
-    pdfkit.from_url(url_report, pdffile, options=options)  #生成pdf
+    pdfkit.from_url(url_report, pdffile, options=options)  # 生成pdf
 
     return send_from_directory(path, filename=filename, as_attachment=True)
 
 
-@main.route('/report/', methods=['GET','POST'])
+@main.route('/report_s/', methods=['GET', 'POST'])  # 搜索报告
 def search():
-    report_id = request.form.get('rep_id')
+    # report_id = request.form.get('rep_id')
+    report_id = (request.url).split('=')[-1]
     print(report_id)
     df = {
-        'status': HeInfo.query.filter(HeInfo.申请单号 == report_id).all()
+        'status': HeInfo.query.filter(HeInfo.申请单号 == report_id).all(),
+        'status_mg': HeInfo.query.filter(HeInfo.迈景编号 == report_id).all()
     }
     now = ''
     return render_template('report.html', **df, now=now)
+
 
 # @main.route('/imginfo/', methods=['GET', 'POST'])
 # def imginfo():
@@ -157,16 +194,16 @@ def search():
 #     return render_template('imginfo.html', img_form=img_form)
 
 
-@main.route('/report/<report_id>')
+@main.route('/report/<report_id>')  # 报告详情
 def report_detail(report_id):
     def Time_set(get_time):
         T = get_time[0: 4] + '-' + get_time[4: 6] + '-' + get_time[6: 8]
         return T
+
     sample_info = HeInfo.query.filter(HeInfo.申请单号 == report_id).first()
     # now = datetime.datetime.now().strftime('%Y-%m-%d')
     # url_report = str(req.url)  #得到当前网页的url
     return render_template('he-report.html', sample_info=sample_info, Time_set=Time_set)
-
 
 
 def excel_rd(path_xl):
@@ -192,8 +229,11 @@ def heinfo():
 
     def sample_info(item_sample):
         Value = rows[title_ex.index(item_sample)]
-        if type(Value) is float:
+
+        if type(Value) is float and Value > 1:
             Value = int(Value)
+        if Value == '0%':
+            Value = '0'
         return str(Value)
 
     # Report_form = ReportInfoForm()
@@ -206,7 +246,6 @@ def heinfo():
             wb_e = xlrd.open_workbook(os.path.join(path_zip, file))
             table = wb_e.sheets()[0]
             title_ex = table.row_values(0)
-            print(title_ex)
             id_sa = title_ex.index('迈景编号')
             cols = table.col_values(id_sa)
             cols.pop(0)
@@ -221,16 +260,16 @@ def heinfo():
                     rows = (table.row_values(sam))
 
                     samp_info = SampleInfo(序号=sample_info('序号'), 迈景编号=sample_info('迈景编号'),
-                                           PI姓名=sample_info('PI姓名'),销售代表=sample_info('销售代表'),
+                                           PI姓名=sample_info('PI姓名'), 销售代表=sample_info('销售代表'),
                                            申请单号=sample_info('申请单号'), 患者姓名=sample_info('患者姓名'),
                                            病人性别=sample_info('病人性别'), 病人年龄=sample_info('病人年龄'),
-                                           民族=sample_info('民族'),籍贯=sample_info('籍贯'),
+                                           民族=sample_info('民族'), 籍贯=sample_info('籍贯'),
                                            检测项目=sample_info('检测项目'), 病人联系方式=sample_info('病人联系方式'),
                                            病人身份证号码=sample_info('病人身份证号码'), 病人地址=sample_info('病人地址'),
                                            门诊住院号=sample_info('门诊/住院号'), 医生姓名=sample_info('医生姓名'),
                                            医院名称=sample_info('医院名称'), 科室=sample_info('科室'),
-                                           病理号=sample_info('病理号'),临床诊断=sample_info('临床诊断'),
-                                           临床诊断日期=sample_info('诊断日期'),病理诊断=sample_info('病理诊断'),
+                                           病理号=sample_info('病理号'), 临床诊断=sample_info('临床诊断'),
+                                           临床诊断日期=sample_info('诊断日期'), 病理诊断=sample_info('病理诊断'),
                                            病理诊断日期=sample_info('诊断日期'),
                                            病理样本收到日期=sample_info('病理样本收到日期'),
                                            组织大小=sample_info('组织大小（单位mm）'),
@@ -248,16 +287,16 @@ def heinfo():
                                            有无其他基因疾病=sample_info('有无其他基因疾病'),
                                            有无吸烟史=sample_info('有无吸烟史'), 项目类型=sample_info('项目类型'),
                                            样本来源=sample_info('样本来源'), 采样方式=sample_info('采样方式'),
-                                           样本类型=sample_info('样本类型'),数量=sample_info('数量'),
+                                           样本类型=sample_info('样本类型'), 数量=sample_info('数量'),
                                            运输方式=sample_info('运输方式'), 状态是否正常=sample_info('状态是否正常'),
                                            送检人=sample_info('送检人'), 送检日期=sample_info('送检日期'),
-                                           收样人=sample_info('收样人'),收样日期=sample_info('收样日期'),
-                                           检测日期=sample_info('检测日期'),报告发出时间=sample_info('报告发出时间'),
-                                           报告收件人=sample_info('报告收件人'),联系电话=sample_info('联系电话'),
+                                           收样人=sample_info('收样人'), 收样日期=sample_info('收样日期'),
+                                           检测日期=sample_info('检测日期'), 报告发出时间=sample_info('报告发出时间'),
+                                           报告收件人=sample_info('报告收件人'), 联系电话=sample_info('联系电话'),
                                            联系地址=sample_info('联系地址'), 备注=sample_info('备注'),
                                            申请单病理报告扫描件命名=sample_info('申请单、病理报告扫描件命名'),
-                                           不出报告原因 = sample_info('不出报告原因'), 录入 = sample_info('录入'),
-                                           审核 = sample_info('审核'))
+                                           不出报告原因=sample_info('不出报告原因'), 录入=sample_info('录入'),
+                                           审核=sample_info('审核'))
                     if SampleInfo.query.filter(SampleInfo.迈景编号 == sample_id).first():
                         pass
                     else:
@@ -277,7 +316,7 @@ def heinfo():
                                            销售代表=hesamp_info.销售代表,
                                            申请单号=hesamp_info.申请单号, 患者姓名=hesamp_info.患者姓名,
                                            病人性别=hesamp_info.病人性别, 病人年龄=hesamp_info.病人年龄,
-                                           民族=hesamp_info.民族,籍贯=hesamp_info.籍贯,
+                                           民族=hesamp_info.民族, 籍贯=hesamp_info.籍贯,
                                            检测项目=hesamp_info.检测项目, 病人联系方式=hesamp_info.病人联系方式,
                                            病人身份证号码=hesamp_info.病人身份证号码, 病人地址=hesamp_info.病人地址,
                                            门诊住院号=hesamp_info.门诊住院号, 医生姓名=hesamp_info.医生姓名,
@@ -296,17 +335,17 @@ def heinfo():
                                            靶向药治疗结束时间=hesamp_info.靶向药治疗结束时间,
                                            靶向药治疗治疗效果=hesamp_info.靶向药治疗治疗效果,
                                            是否放疗=hesamp_info.是否放疗, 放疗开始时间=hesamp_info.放疗开始时间,
-                                           放疗结束时间=hesamp_info.放疗结束时间,放疗治疗效果=hesamp_info.放疗治疗效果,
+                                           放疗结束时间=hesamp_info.放疗结束时间, 放疗治疗效果=hesamp_info.放疗治疗效果,
                                            有无家族遗传疾病=hesamp_info.有无家族遗传疾病,
                                            有无其他基因疾病=hesamp_info.有无其他基因疾病, 有无吸烟史=hesamp_info.有无吸烟史,
                                            项目类型=hesamp_info.项目类型, 样本来源=hesamp_info.样本来源,
-                                           采样方式=hesamp_info.采样方式,样本类型=hesamp_info.样本类型,
+                                           采样方式=hesamp_info.采样方式, 样本类型=hesamp_info.样本类型,
                                            数量=hesamp_info.数量, 运输方式=hesamp_info.运输方式,
                                            状态是否正常=hesamp_info.状态是否正常, 送检人=hesamp_info.送检人,
-                                           送检日期=hesamp_info.送检日期,收样人=hesamp_info.收样人,
+                                           送检日期=hesamp_info.送检日期, 收样人=hesamp_info.收样人,
                                            收样日期=hesamp_info.收样日期, 检测日期=hesamp_info.检测日期,
                                            报告发出时间=hesamp_info.报告发出时间, 报告收件人=hesamp_info.报告收件人,
-                                           联系电话=hesamp_info.联系电话,联系地址=hesamp_info.联系地址,
+                                           联系电话=hesamp_info.联系电话, 联系地址=hesamp_info.联系地址,
                                            备注=hesamp_info.备注,
                                            申请单病理报告扫描件命名=hesamp_info.申请单病理报告扫描件命名,
                                            不出报告原因=hesamp_info.不出报告原因,
@@ -323,7 +362,6 @@ def heinfo():
             os.remove(os.path.join(path_zip, file))
             # 提示上传成功
     return render_template('seqinfo.html', form=up_form, img_form=img_form, filename=filename)
-
 
 
 # @main.route('/regist1/', methods=["GET", "POST"])
@@ -374,5 +412,3 @@ def my_context_processor():
         if user:
             return {'user': user}
     return {}
-
-

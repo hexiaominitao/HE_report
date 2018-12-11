@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}首页{% endblock %}
+{% block title %}报告{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/index-login-regist.css') }}">
 <script src="{{ url_for('static', filename='laydate/laydate.js') }}"></script>
@@ -64,6 +64,29 @@
             </td>
         </tr>
         {% endfor %}
+    </table>
+    {% elif status_mg %}
+    <table style="border-collapse: collapse;" class="table table-striped table-condensed">
+        <caption style="text-align:left">病理报告 {{ now }}</caption>
+        <tr>
+            <th>申请单号</th>
+            <th>迈景编号</th>
+            <th>病理审核</th>
+            <th>下载</th>
+        </tr>
+        {% for row in status_mg %}
+        <tr>
+            <td><a href="{{ url_for('main.report_detail', report_id=row.申请单号) }}">{{ row.申请单号 }}</a></td>
+            <td>{{ row.迈景编号 }}</td>
+            <td>{{ row.病理审核 }}</td>
+            <td>
+                <button class="btn btn-default"><a
+                        href="{{ url_for('main.report_download', filename='{}.pdf'.format(row.申请单号)) }}">下载</a></button>
+            </td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <p>没有找到这份报告</p>
     </table>
     {% endif %}
 </div>

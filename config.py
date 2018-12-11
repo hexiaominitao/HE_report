@@ -43,6 +43,7 @@ class DevelopmentConfig(Config):
     SQLALCHEMY_DATABASE_URI = "{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(DIALECT,
                                                                            DRIVER, USERNAME, PASSWORD,
                                                                            HOST, PORT, DATEBASE)
+    BROKER_URL = 'sqla+mysql://{}:{}@localhost/foo'
     UPLOADED_ZIPFILE_DEST = 'zip'
     UPLOADED_PHOTOS_DEST = 'app/static/img'
     PDF_FILE = 'pdf'

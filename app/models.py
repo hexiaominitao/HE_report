@@ -11,7 +11,7 @@ class User(db.Model):
     password = db.Column(db.String(100), nullable=False)
 
     def __reper__(seif):
-        return '<Note %r>' %seif.body
+        return '<Note %r>' % seif.body
 
 
 class HeInfo(db.Model):
@@ -158,6 +158,28 @@ class SampleInfo(db.Model):
     不出报告原因 = db.Column(db.String(200), nullable=True)
     录入 = db.Column(db.String(50), nullable=True)
     审核 = db.Column(db.String(50), nullable=True)
+
+    def __reper__(seif):
+        return '<Note %r>' % seif.body
+
+
+class FastQc(db.Model):
+    __tablename__ = 'fastqc'
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    迈景编号 = db.Column(db.String(50), nullable=False, index=True)
+    Sample_id = db.Column(db.String(50), nullable=False)
+    Reads_num = db.Column(db.String(50), nullable=False)
+    Base_num = db.Column(db.String(50), nullable=False)
+    Q20_count = db.Column(db.String(50), nullable=False)
+    Q20 = db.Column(db.String(50), nullable=False)
+    Q30_count = db.Column(db.String(50), nullable=False)
+    Q30 = db.Column(db.String(50), nullable=False)
+    GC_count = db.Column(db.String(50), nullable=False)
+    GC_rate = db.Column(db.String(50), nullable=False)
+    N_count = db.Column(db.String(50), nullable=False)
+    Reads_rate = db.Column(db.String(50), nullable=False)
+    sample_id = db.Column(db.Integer, db.ForeignKey("sampleinfo.id"))
+    sample = db.relationship("SampleInfo", backref="fastqcs")
 
     def __reper__(seif):
         return '<Note %r>' % seif.body
